@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:facturito/backend/api_requests/api_calls.dart';
 import 'package:facturito/models/DTO/FacturaDTO.dart';
+import 'package:facturito/pages/compartir_info/compartir_info_widget.dart';
+import 'package:facturito/shared/customSnackBar.dart';
 
 import '/componentes/calendario/calendario_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -34,9 +36,7 @@ class _FacturaEmitidaWidgetState extends State<FacturaEmitidaWidget> {
             idCliente: FFAppState().idCliente)
         .then((value) {
       facturas = facturaDtoFromJson(json.encode(value.jsonBody));
-      setState(() {
-        
-      });
+      setState(() {});
     });
   }
 
@@ -249,8 +249,18 @@ class ItemFactura extends StatelessWidget {
                         FFButtonWidget(
                           onPressed: autorizacion == ''
                               ? null
-                              : () {
-                                  print('Button pressed ...');
+                              : () async {
+                                  try {
+                                    await showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext bc) {
+                                        return CompartirInfoWidget(
+                                            numAutorizacion: autorizacion);
+                                      },
+                                    );
+                                  } catch (e) {
+                                    customSnackBar(context, 'error');
+                                  }
                                 },
                           text: '',
                           icon: Icon(
@@ -286,7 +296,7 @@ class ItemFactura extends StatelessWidget {
                             onPressed: autorizacion != ''
                                 ? null
                                 : () {
-                                    print('Button pressed ...');
+                                    print('Button pressed .d..');
                                   },
                             text: '',
                             icon: Icon(

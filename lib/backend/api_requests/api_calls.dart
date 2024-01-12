@@ -49,6 +49,42 @@ class Dashboard {
       cache: false,
     );
   }
+
+    static Future<ApiCallResponse> getClientesFrecuentes({required int idCliente}) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'getClientesFrecuentes',
+      apiUrl: '${Enviroments.endpoint}/dashboard/getClientesFrecuentes',
+      callType: ApiCallType.POST,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      params: {"idCliente": idCliente},
+      body: null,
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
+      returnBody: true,
+      encodeBodyUtf8: true,
+      decodeUtf8: true,
+      cache: false,
+    );
+  }
+
+      static Future<ApiCallResponse> getProductosFrecuentes({required int idCliente}) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'getProductosFrecuentes',
+      apiUrl: '${Enviroments.endpoint}/dashboard/getProductosFrecuentes',
+      callType: ApiCallType.POST,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      params: {"idCliente": idCliente},
+      body: null,
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
+      returnBody: true,
+      encodeBodyUtf8: true,
+      decodeUtf8: true,
+      cache: false,
+    );
+  }
 }
 
 class PuntoEmisionCall {
@@ -250,6 +286,7 @@ class GenerarFacturaCall {
   static Future<ApiCallResponse> generarFacturaPDF({
     String? numeroAutorizacion = '',
   }) {
+    print('${Enviroments.endpointSRI}/getPDF/$numeroAutorizacion');
     return ApiManager.instance.makeApiCall(
       callName: 'backContFiablesGenerarPDF',
       apiUrl: '${Enviroments.endpointSRI}/getPDF/$numeroAutorizacion',

@@ -4,6 +4,7 @@ import 'package:facturito/componentes/register_new_user/register.dart';
 import 'package:facturito/pages/facturar/factura.dart';
 import 'package:facturito/pages/facturar/facturar.dart';
 import 'package:facturito/pages/sales/FacturasEmitidas.dart';
+import 'package:facturito/pages/visualizacion_p_d_f/visualizacion_p_d_f_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../pages/Producto/ProductoPage.dart';
@@ -94,6 +95,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'menuReportes',
           path: '/menuReportes',
           builder: (context, params) => MenuReportesWidget(),
+        ),
+        FFRoute(
+          name: 'visualizacionPDF',
+          path: '/visualizacionPDF',
+          builder: (context, params) => VisualizacionPDFWidget(),
         ),
         FFRoute(
           name: 'FactProducto',
