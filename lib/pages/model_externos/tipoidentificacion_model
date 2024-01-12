@@ -1,0 +1,28 @@
+import '/componentes/actualizar_cliente/actualizar_cliente_widget.dart';
+import '/componentes/crear_cliente/crear_cliente_widget.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+class tipoIdenticacionModel{
+  int id;
+  String codigo;
+  String tipoIdenticacion
+
+  tipoIdenticacion({
+     required this.id,
+     required this.codigo,
+     required this.tipoIdenticacion,
+  })
+  factory tipoIdenticacionModel.fromJSON(Map<String,dynamic>json){
+    return tipoIdenticacionModel(
+      id:json['id'],
+      codigo: json['codigo'],
+      tipoIdenticacion: json['tipoIdenticacion']
+    );
+  }
+}
