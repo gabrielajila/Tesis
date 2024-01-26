@@ -131,7 +131,7 @@ class _FacturaEmitidaWidgetState extends State<FacturaEmitidaWidget> {
                         fecha: f.fechaEmision,
                         razonSocial: f.razonSocial,
                         valor: f.total,
-                        autorizacion: f.authorizacion);
+                        autorizacion: f.authorizacion, idFactura:f.id );
                   },
                 ),
               ],
@@ -149,12 +149,13 @@ class ItemFactura extends StatelessWidget {
     required this.valor,
     required this.razonSocial,
     required this.fecha,
-    required this.autorizacion,
+    required this.autorizacion, required this.idFactura,
   });
   final double valor;
   final String razonSocial;
   final DateTime fecha;
   final String autorizacion;
+  final int idFactura;
 
   @override
   Widget build(BuildContext context) {
@@ -255,7 +256,7 @@ class ItemFactura extends StatelessWidget {
                                       context: context,
                                       builder: (BuildContext bc) {
                                         return CompartirInfoWidget(
-                                            numAutorizacion: autorizacion);
+                                            numAutorizacion: autorizacion, idFactura: idFactura);
                                       },
                                     );
                                   } catch (e) {

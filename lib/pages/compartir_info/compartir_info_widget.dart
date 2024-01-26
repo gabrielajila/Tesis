@@ -1,5 +1,7 @@
 import 'package:facturito/backend/api_requests/api_calls.dart';
+import 'package:facturito/componentes/mail/modal_envia_correo.dart';
 import 'package:facturito/pages/visualizacion_p_d_f/visualizacion_p_d_f_widget.dart';
+import 'package:facturito/shared/customSnackBar.dart';
 
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -8,8 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CompartirInfoWidget extends StatelessWidget {
-  const CompartirInfoWidget({super.key, required this.numAutorizacion});
+  const CompartirInfoWidget({super.key, required this.numAutorizacion, required this.idFactura});
   final String numAutorizacion;
+  final int idFactura;
 
   @override
   Widget build(BuildContext context) {
@@ -105,9 +108,10 @@ class CompartirInfoWidget extends StatelessWidget {
                         });
                         // await context.pushNamed('visualizacionPDF');
 
-                        await showModalBottomSheet(isScrollControlled: true,
-                        isDismissible: true,
-                        useSafeArea: true,
+                        await showModalBottomSheet(
+                          isScrollControlled: true,
+                          isDismissible: true,
+                          useSafeArea: true,
                           context: context,
                           builder: (BuildContext bc) {
                             return VisualizacionPDFWidget();
@@ -135,8 +139,24 @@ class CompartirInfoWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: FFButtonWidget(
-                    onPressed: () {
-                      print('Button pressed ...');
+                    onPressed: () async {
+                      Navigator.pop(context);
+
+                      try {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            // Aquí regresas tu widget dentro del Dialog
+                            return AlertDialog(
+                              title: Text('Enviar Correo Electrónico'),
+                              content: ModaCorreoWidget(idFactura: idFactura,),
+                              actions: <Widget>[],
+                            );
+                          },
+                        );
+                      } catch (e) {
+                        customSnackBar(context, 'error');
+                      }
                     },
                     text: 'Correo electrónico',
                     options: FFButtonOptions(

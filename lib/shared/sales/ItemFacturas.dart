@@ -1,7 +1,9 @@
-import 'package:facturito/componentes/modal_fact_detalle/modal_fact_detalle_widget.dart';
 import 'package:facturito/flutter_flow/flutter_flow_theme.dart';
 import 'package:facturito/models/DTO/FacturaDTO.dart';
+import 'package:facturito/pages/compartir_info/compartir_info_widget.dart';
+import 'package:facturito/shared/customSnackBar.dart';
 import 'package:flutter/material.dart';
+
 class CustomDetal extends StatelessWidget {
   const CustomDetal({
     super.key,
@@ -14,20 +16,17 @@ class CustomDetal extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        await showModalBottomSheet(
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          enableDrag: false,
-          context: context,
-          builder: (context) {
-            return GestureDetector(
-              child: Padding(
-                padding: MediaQuery.viewInsetsOf(context),
-                child: ModalFactDetalleWidget(),
-              ),
-            );
-          },
-        );
+        try {
+          await showModalBottomSheet(
+            context: context,
+            builder: (BuildContext bc) {
+              print('object ${fact.id}');
+              return CompartirInfoWidget(numAutorizacion: fact.authorizacion, idFactura: fact.id);
+            },
+          );
+        } catch (e) {
+          customSnackBar(context, 'error');
+        }
       },
       child: Column(
         children: [
@@ -62,13 +61,16 @@ class CustomDetal extends StatelessWidget {
                     children: [
                       Text(
                         '${fact.razonSocial}',
-                        style: FlutterFlowTheme.of(context).titleMedium.override(
+                        style: FlutterFlowTheme.of(context)
+                            .titleMedium
+                            .override(
                               fontFamily: 'Readex Pro',
                               color: FlutterFlowTheme.of(context).primaryText,
                             ),
                       ),
                       Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                         child: Text(
                           '${fact.numComprobante} ${fact.fechaEmision}',
                           style: FlutterFlowTheme.of(context).bodyMedium,
@@ -94,7 +96,8 @@ class CustomDetal extends StatelessWidget {
                           ),
                     ),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 0.0),
                       child: Text(
                         'Compra',
                         textAlign: TextAlign.end,

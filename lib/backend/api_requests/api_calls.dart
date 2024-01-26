@@ -216,6 +216,29 @@ class ProductoApiCall {
 }
 
 class GenerarFacturaCall {
+
+  static Future<ApiCallResponse> reenviarFacturaPorCorreo({
+    required int idFactura,
+    required correoAdquiriente,
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'reenviarFacturaPorCorreo',
+      apiUrl:
+          '${Enviroments.endpoint}/factura/reenviarFacturaPorCorreo',
+      callType: ApiCallType.POST,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      params: {"idFactura": idFactura, "correo": correoAdquiriente},
+      body: null,
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
+      returnBody: true,
+      encodeBodyUtf8: true,
+      decodeUtf8: true,
+      cache: false,
+    );
+  }
+
   static Future<ApiCallResponse> enviarFacturaByAutorizacion({
     String? numAutorizacion = '',
     String? correoAdquiriente = '',
