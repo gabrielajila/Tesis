@@ -246,9 +246,6 @@ class _ProductoPageState extends State<ProductoPage> {
                           productos =
                               productoFromJson(snapshot.data.response.body);
                           return ListView.builder(
-                            // physics: ScrollPhysics(
-                            //     parent:
-                            //         NeverScrollableScrollPhysics()),
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
@@ -263,7 +260,7 @@ class _ProductoPageState extends State<ProductoPage> {
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500)),
                                 trailing: IconButton(
-                                  icon: Icon(Icons.menu),
+                                  icon: Icon(Icons.mode),
                                   onPressed: () async {
                                     await showModalBottomSheet(
                                       isScrollControlled: true,
