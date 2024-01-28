@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:facturito/backend/api_requests/api_calls.dart';
 import 'package:facturito/models/DTO/FacturaDTO.dart';
 import 'package:facturito/pages/compartir_info/compartir_info_widget.dart';
+import 'package:facturito/pages/menu_principal/menu_principal_widget.dart';
 import 'package:facturito/shared/customSnackBar.dart';
 
 import '/componentes/calendario/calendario_widget.dart';
@@ -131,7 +132,8 @@ class _FacturaEmitidaWidgetState extends State<FacturaEmitidaWidget> {
                         fecha: f.fechaEmision,
                         razonSocial: f.razonSocial,
                         valor: f.total,
-                        autorizacion: f.authorizacion, idFactura:f.id );
+                        autorizacion: f.authorizacion,
+                        idFactura: f.id);
                   },
                 ),
               ],
@@ -149,7 +151,8 @@ class ItemFactura extends StatelessWidget {
     required this.valor,
     required this.razonSocial,
     required this.fecha,
-    required this.autorizacion, required this.idFactura,
+    required this.autorizacion,
+    required this.idFactura,
   });
   final double valor;
   final String razonSocial;
@@ -256,7 +259,8 @@ class ItemFactura extends StatelessWidget {
                                       context: context,
                                       builder: (BuildContext bc) {
                                         return CompartirInfoWidget(
-                                            numAutorizacion: autorizacion, idFactura: idFactura);
+                                            numAutorizacion: autorizacion,
+                                            idFactura: idFactura);
                                       },
                                     );
                                   } catch (e) {
@@ -296,8 +300,23 @@ class ItemFactura extends StatelessWidget {
                           child: FFButtonWidget(
                             onPressed: autorizacion != ''
                                 ? null
-                                : () {
-                                    print('Button pressed .d..');
+                                : () async {
+                                    try {
+                                      ApiCallResponse response =
+                                          await GenerarFacturaCall
+                                              .reenviarFacturaById(
+                                                  idFactura: idFactura);
+                                      print(response.bodyText);
+                                      customSnackBar(context,
+                                          response.jsonBody['mensaje']);
+                                      if (response.jsonBody['codigo'] == '0') {
+                                        context.pushReplacementNamed(
+                                            'menuPrincipal');
+                                      }
+                                    } catch (e) {
+                                      customSnackBar(context,
+                                          'Error al reenviar la factura');
+                                    }
                                   },
                             text: '',
                             icon: Icon(

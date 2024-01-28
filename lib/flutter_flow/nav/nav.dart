@@ -8,7 +8,7 @@ import 'package:facturito/pages/visualizacion_p_d_f/visualizacion_p_d_f_widget.d
 import 'package:flutter/material.dart';
 
 import '../../pages/Producto/ProductoPage.dart';
-import '/index.dart';
+import '../../index.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 export 'package:go_router/go_router.dart';

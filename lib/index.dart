@@ -1,6 +1,5 @@
 // Export pages
 export '/pages/home_page/home_page_widget.dart' show HomePageWidget;
-export '/pages/registrar/registrar_widget.dart' show RegistrarWidget;
 export '/pages/menu_principal/menu_principal_widget.dart'
     show MenuPrincipalWidget;
 export 'pages/Producto/ProductoPage.dart' show ProductoPage;

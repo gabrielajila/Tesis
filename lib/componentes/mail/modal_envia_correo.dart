@@ -30,7 +30,7 @@ class _ModaCorreoWidgetState extends State<ModaCorreoWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => ModaCorreoModel());
-    idFactura=widget.idFactura;
+    idFactura = widget.idFactura;
     _model.textController ??= TextEditingController();
     _model.textFieldFocusNode ??= FocusNode();
 
@@ -110,8 +110,7 @@ class _ModaCorreoWidgetState extends State<ModaCorreoWidget> {
                 ),
               ),
               style: FlutterFlowTheme.of(context).bodyMedium,
-              validator:
-                  _model.textControllerValidator.asValidator(context),
+              validator: _model.textControllerValidator.asValidator(context),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -126,41 +125,44 @@ class _ModaCorreoWidgetState extends State<ModaCorreoWidget> {
                     text: 'Cancelar',
                     options: FFButtonOptions(
                       height: 40.0,
-                      padding: EdgeInsetsDirectional.fromSTEB(
-                          0, 0.0, 0, 0.0),
-                      iconPadding: EdgeInsetsDirectional.fromSTEB(
-                          0.0, 0.0, 0.0, 0.0),
-                      color:
-                          FlutterFlowTheme.of(context).secondaryBackground,
+                      padding: EdgeInsetsDirectional.fromSTEB(0, 0.0, 0, 0.0),
+                      iconPadding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
                       textStyle: FlutterFlowTheme.of(context).bodySmall,
                       elevation: 0.0,
                       borderSide: BorderSide(
-                        color:
-                            FlutterFlowTheme.of(context).primaryBackground,
+                        color: FlutterFlowTheme.of(context).primaryBackground,
                         width: 2.0,
                       ),
                       borderRadius: BorderRadius.circular(8.0),
                       hoverColor:
                           FlutterFlowTheme.of(context).primaryBackground,
-                      hoverTextColor:
-                          FlutterFlowTheme.of(context).primaryText,
+                      hoverTextColor: FlutterFlowTheme.of(context).primaryText,
                     ),
                   ),
                   FFButtonWidget(
-                    onPressed: ()async {
-                      String correo=_model.textController.text;
-                      ApiCallResponse response=await GenerarFacturaCall.reenviarFacturaPorCorreo(idFactura: idFactura, correoAdquiriente: correo);
-                      Navigator.pop(context);
-                      customSnackBar(context, response.jsonBody['mensaje']);
+                    onPressed: () async {
+                      try {
+                        String correo = _model.textController.text;
+                        ApiCallResponse response =
+                            await GenerarFacturaCall.reenviarFacturaPorCorreo(
+                                idFactura: idFactura,
+                                correoAdquiriente: correo);
+                        Navigator.pop(context);
+                        customSnackBar(context, response.jsonBody['mensaje']);
+                      } catch (e) {
+                        customSnackBar(context, 'Error al enviar correo');
+                      }
                     },
                     text: 'Enviar',
                     options: FFButtonOptions(
                       width: 130.0,
                       height: 40.0,
-                      padding: EdgeInsetsDirectional.fromSTEB(
-                          0.0, 0.0, 0.0, 0.0),
-                      iconPadding: EdgeInsetsDirectional.fromSTEB(
-                          0.0, 0.0, 0.0, 0.0),
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                      iconPadding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                       color: FlutterFlowTheme.of(context).primary,
                       textStyle:
                           FlutterFlowTheme.of(context).titleSmall.override(

@@ -217,6 +217,27 @@ class ProductoApiCall {
 
 class GenerarFacturaCall {
 
+  static Future<ApiCallResponse> reenviarFacturaById({
+    required int idFactura,
+  }) {
+    return ApiManager.instance.makeApiCall(
+      callName: 'reenviarFacturabyIdFactura',
+      apiUrl:
+          '${Enviroments.endpoint}/factura/reenviarFacturabyIdFactura',
+      callType: ApiCallType.POST,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      params: {"idFactura": idFactura},
+      body: null,
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
+      returnBody: true,
+      encodeBodyUtf8: true,
+      decodeUtf8: true,
+      cache: false,
+    );
+  }
+
   static Future<ApiCallResponse> reenviarFacturaPorCorreo({
     required int idFactura,
     required correoAdquiriente,
