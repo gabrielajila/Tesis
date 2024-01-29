@@ -23,14 +23,43 @@ class _ProductoPageState extends State<ProductoPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<Producto> productos = [];
+  List<Producto> filteredProductos = [];
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => ProductoPageModel());
-
+    ProductoApiCall.obtenerListaProductos(FFAppState().idCliente).then((value) {
+      print(value);
+      productos = productoFromJson(value.response!.body);
+      filteredProductos = productos;
+      setState(() {
+        
+      });
+    });
     _model.textController ??= TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
+  }
+
+  void _filterData(String enteredKeyword) {
+    List<Producto> results = [];
+    if (enteredKeyword.isEmpty) {
+      results = productos;
+    } else {
+      results = productos
+          .where((item) =>
+              item.codigo
+                  .toLowerCase()
+                  .contains(enteredKeyword.toLowerCase()) ||
+              item.nombreProducto
+                  .toLowerCase()
+                  .contains(enteredKeyword.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      filteredProductos = results;
+    });
   }
 
   @override
@@ -97,6 +126,7 @@ class _ProductoPageState extends State<ProductoPage> {
                           controller: _model.textController,
                           autofocus: true,
                           obscureText: false,
+                          onChanged: _filterData,
                           decoration: InputDecoration(
                             labelText: 'Buscar Producto',
                             labelStyle: FlutterFlowTheme.of(context)
@@ -237,25 +267,17 @@ class _ProductoPageState extends State<ProductoPage> {
                       thickness: 1.0,
                       color: Color(0xFFE0E3E7),
                     ),
-                    FutureBuilder(
-                      future: ProductoApiCall.obtenerListaProductos(
-                          FFAppState().idCliente),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<dynamic> snapshot) {
-                        if (snapshot.hasData) {
-                          productos =
-                              productoFromJson(snapshot.data.response.body);
-                          return ListView.builder(
+                    ListView.builder(
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            itemCount: productos.length,
+                            itemCount: filteredProductos.length,
                             itemBuilder: (BuildContext context, int i) {
                               return ListTile(
                                 title: Text(
-                                  '${productos[i].nombreProducto}',
+                                  '${filteredProductos[i].nombreProducto}',
                                 ),
-                                subtitle: Text('${productos[i].codigo}',
+                                subtitle: Text('${filteredProductos[i].codigo}',
                                     style: TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500)),
@@ -275,7 +297,7 @@ class _ProductoPageState extends State<ProductoPage> {
                                             padding: MediaQuery.viewInsetsOf(
                                                 context),
                                             child: ProductoFormWidget(
-                                              producto: productos[i],
+                                              producto: filteredProductos[i],
                                             ),
                                           ),
                                         );
@@ -285,16 +307,7 @@ class _ProductoPageState extends State<ProductoPage> {
                                 ),
                               );
                             },
-                          );
-                        } else if (snapshot.hasError) {
-                          return const Center(
-                            child: Text('Error'),
-                          );
-                        } else {
-                          return const LinearProgressIndicator();
-                        }
-                      },
-                    ),
+                          ),
                     Divider(
                       thickness: 1.0,
                       color: Color(0xFFE0E3E7),

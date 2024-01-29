@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:facturito/backend/api_requests/api_calls.dart';
 import 'package:facturito/enviroments.dart';
 import 'package:facturito/models/Adquiriente.dart';
 
 import '/componentes/actualizar_cliente/actualizar_cliente_widget.dart';
-import '/componentes/crear_cliente/crear_cliente_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -27,6 +24,8 @@ class _ClientesWidgetState extends State<ClientesWidget> {
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<Adquiriente> clientes = [];
+  List<Adquiriente> filteredClientes = [];
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +35,13 @@ class _ClientesWidgetState extends State<ClientesWidget> {
     _model.identificacion ??= TextEditingController();
     _model.direccion ??= TextEditingController();
     _model.telefono ??= TextEditingController();
+    AdquirienteCall.obtenerListaAdquirientes().then((value) {
+      print(value);
+      clientes = adquirienteFromJson(value.response!.body);
+      filteredClientes = clientes;
+      setState(() {});
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
@@ -44,6 +50,27 @@ class _ClientesWidgetState extends State<ClientesWidget> {
     _model.dispose();
     _unfocusNode.dispose();
     super.dispose();
+  }
+
+  void _filterData(String enteredKeyword) {
+    List<Adquiriente> results = [];
+    if (enteredKeyword.isEmpty) {
+      results = clientes;
+    } else {
+      results = clientes
+          .where((item) =>
+              item.razonSocial
+                  .toLowerCase()
+                  .contains(enteredKeyword.toLowerCase()) ||
+              item.identificacion
+                  .toLowerCase()
+                  .contains(enteredKeyword.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      filteredClientes = results;
+    });
   }
 
   @override
@@ -112,6 +139,7 @@ class _ClientesWidgetState extends State<ClientesWidget> {
                             controller: _model.identificacion,
                             autofocus: true,
                             obscureText: false,
+                            onChanged: _filterData,
                             decoration: InputDecoration(
                               labelText: 'Buscar Cliente',
                               labelStyle: FlutterFlowTheme.of(context)
@@ -285,7 +313,54 @@ class _ClientesWidgetState extends State<ClientesWidget> {
                                   thickness: 1.0,
                                   color: Color.fromARGB(255, 108, 126, 149),
                                 ),
-                                getClients(),
+                                ListView.builder(
+                                  physics: ScrollPhysics(
+                                      parent: NeverScrollableScrollPhysics()),
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: filteredClientes.length,
+                                  itemBuilder: (BuildContext context, int i) {
+                                    return ListTile(
+                                      title: Text(
+                                        '${filteredClientes[i].razonSocial}',
+                                      ),
+                                      subtitle: Text(
+                                          '${filteredClientes[i].identificacion}',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500)),
+                                      trailing: IconButton(
+                                        icon: Icon(Icons.menu),
+                                        onPressed: () async {
+                                          print('{object}');
+                                          await showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            enableDrag: false,
+                                            context: context,
+                                            builder: (context) {
+                                              return GestureDetector(
+                                                onTap: () => FocusScope.of(
+                                                        context)
+                                                    .requestFocus(_unfocusNode),
+                                                child: Padding(
+                                                  padding:
+                                                      MediaQuery.viewInsetsOf(
+                                                          context),
+                                                  child:
+                                                      ActualizarClienteWidget(
+                                                    cliente: filteredClientes[i],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ).then((value) => setState(() {}));
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
                                 Divider(
                                   thickness: 1.0,
                                   color: Color.fromARGB(255, 108, 126, 149),
@@ -306,61 +381,5 @@ class _ClientesWidgetState extends State<ClientesWidget> {
     );
   }
 
-  FutureBuilder<ApiCallResponse> getClients() {
-    return FutureBuilder(
-      future: AdquirienteCall.obtenerListaAdquirientes(),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.hasData) {
-          clientes = adquirienteFromJson(snapshot.data.response.body);
-          return ListView.builder(
-            physics: ScrollPhysics(parent: NeverScrollableScrollPhysics()),
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            itemCount: clientes.length,
-            itemBuilder: (BuildContext context, int i) {
-              return ListTile(
-                title: Text(
-                  '${clientes[i].razonSocial}',
-                ),
-                subtitle: Text('${clientes[i].identificacion}',
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
-                trailing: IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed: () async {
-                    print('{object}');
-                    await showModalBottomSheet(
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                      enableDrag: false,
-                      context: context,
-                      builder: (context) {
-                        return GestureDetector(
-                          onTap: () =>
-                              FocusScope.of(context).requestFocus(_unfocusNode),
-                          child: Padding(
-                            padding: MediaQuery.viewInsetsOf(context),
-                            child: ActualizarClienteWidget(
-                              cliente: clientes[i],
-                            ),
-                          ),
-                        );
-                      },
-                    ).then((value) => setState(() {}));
-                  },
-                ),
-              );
-            },
-          );
-        } else if (snapshot.hasError) {
-          return const Center(
-            child: Text('Error'),
-          );
-        } else {
-          return const LinearProgressIndicator();
-        }
-      },
-    );
-  }
+
 }

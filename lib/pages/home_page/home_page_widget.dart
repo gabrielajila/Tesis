@@ -299,7 +299,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     ApiCallResponse login = await Usuario.login(
                                         _model.textController1.text,
                                         _model.textController2.text);
-
+print('response ${login.bodyText}');
                                     RespSimple responseLogin =
                                         RespSimple.trasformarRespuesta(
                                             login.bodyText);
@@ -337,6 +337,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     customSnackBar(
                                         context, responseLogin.mensaje);
                                   } catch (e) {
+                                    print(e);
                                     customSnackBar(context,
                                         'Error en el proceso de autenticación');
                                   }
