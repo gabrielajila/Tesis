@@ -77,7 +77,7 @@ class _MenuPrincipalWidgetState extends State<MenuPrincipalWidget> {
               size: 30.0,
             ),
             onPressed: () async {
-              context.pop();
+              context.pushReplacementNamed('homePage');
             },
           ),
           actions: [],

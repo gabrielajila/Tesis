@@ -332,7 +332,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                           .jsonBody['data'][0]['idPuntoVenta'];
                                       FFAppState().idPuntoEmision =
                                           idPuntoEmision.toString();
-                                      context.pushNamed('MenuPrincipal');
+                                      context.pushReplacementNamed('MenuPrincipal');
                                     }
                                     customSnackBar(
                                         context, responseLogin.mensaje);

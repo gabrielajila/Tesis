@@ -76,7 +76,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         key: scaffoldKey,
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Color(0xFF0A101F),
+          backgroundColor: Color(0xFF4A70C8),
           automaticallyImplyLeading: false,
           title: Row(
             mainAxisSize: MainAxisSize.max,
@@ -84,8 +84,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  'assets/images/paisaje.png',
+                child: Image.network(
+                  'https://i.ibb.co/K98jf2H/Facorto.png',
                   width: 200,
                   height: 50,
                   fit: BoxFit.fill,
@@ -122,7 +122,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.w500,
                                   ),
-                          indicatorColor: Color(0xFF0A101F),
+                          indicatorColor: Color(0xFF4A70C8),
                           tabs: [
                             Tab(
                               text: 'Registro del Sistema',
@@ -240,7 +240,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                           iconPadding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 0, 0, 0),
-                                          color: Color(0xFF0A101F),
+                                          color: Color(0xFF4A70C8),
                                           textStyle:
                                               FlutterFlowTheme.of(context)
                                                   .titleSmall
@@ -1390,7 +1390,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                           iconPadding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 0, 0, 0),
-                                          color: Color(0xFF0A101F),
+                                          color: Color(0xFF4A70C8),
                                           textStyle:
                                               FlutterFlowTheme.of(context)
                                                   .titleSmall
@@ -1666,7 +1666,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                           iconPadding:
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 0.0, 0.0),
-                                          color: Color(0xFF0A101F),
+                                          color: Color(0xFF4A70C8),
                                           textStyle:
                                               FlutterFlowTheme.of(context)
                                                   .titleSmall
